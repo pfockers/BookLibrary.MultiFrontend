@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/BookLibrary.Api/BookLibrary.Api.csproj" />
+    <Project Path="src/BookLibrary.Blazor/BookLibrary.Blazor.csproj" />
+    <Project Path="src/BookLibrary.Wpf/BookLibrary.Wpf.csproj" />
+  </Folder>
+</Solution>

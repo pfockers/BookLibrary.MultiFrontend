@@ -1,0 +1,31 @@
+﻿@page "/"
+@using System.Net.Http.Json
+@inject HttpClient Http
+
+<PageTitle>Book Library - Blazor</PageTitle>
+<h1>Book Library</h1>
+
+<EditForm Model="newBook" OnValidSubmit="AddBook" class="row g-2 mb-4">
+    <div class="col-md-3"><InputText class="form-control" @bind-Value="newBook.Title" placeholder="Title" /></div>
+    <div class="col-md-3"><InputText class="form-control" @bind-Value="newBook.Author" placeholder="Author" /></div>
+    <div class="col-md-2"><InputText class="form-control" @bind-Value="newBook.Isbn" placeholder="ISBN" /></div>
+    <div class="col-md-2"><InputText class="form-control" @bind-Value="newBook.Genre" placeholder="Genre" /></div>
+    <div class="col-md-2"><button class="btn btn-primary" type="submit">Add book</button></div>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(error)) { <p class="text-danger">@error</p> }
+@if (books is null) { <p>Loading...</p> } else {
+<table class="table table-striped"><thead><tr><th>Title</th><th>Author</th><th>ISBN</th><th>Genre</th><th>Year</th><th></th></tr></thead>
+<tbody>@foreach (var book in books) { <tr><td>@book.Title</td><td>@book.Author</td><td>@book.Isbn</td><td>@book.Genre</td><td>@book.PublishedYear</td><td><button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteBook(book.Id)">Delete</button></td></tr> }</tbody></table>
+}
+
+@code {
+    private List<Book>? books;
+    private Book newBook = new();
+    private string? error;
+
+    protected override async Task OnInitializedAsync() => await LoadBooks();
+    private async Task LoadBooks() => books = await Http.GetFromJsonAsync<List<Book>>("api/books") ?? [];
+    private async Task AddBook() { try { var response = await Http.PostAsJsonAsync("api/books", newBook); response.EnsureSuccessStatusCode(); newBook = new(); await LoadBooks(); } catch (Exception ex) { error = ex.Message; } }
+    private async Task DeleteBook(int id) { await Http.DeleteAsync($"api/books/{id}"); await LoadBooks(); }
+}
