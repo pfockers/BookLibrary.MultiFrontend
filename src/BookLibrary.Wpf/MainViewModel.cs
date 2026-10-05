@@ -9,7 +9,7 @@ namespace BookLibrary.Wpf;
 
 public sealed class MainViewModel : INotifyPropertyChanged
 {
-    private readonly HttpClient _httpClient = new() { BaseAddress = new Uri("http://localhost:5070") };
+    private readonly HttpClient _httpClient = new() { BaseAddress = new Uri("http://localhost:5211") };
     private Book _newBook = new();
     private string _status = "Loading...";
 

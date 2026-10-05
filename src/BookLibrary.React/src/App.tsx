@@ -13,7 +13,7 @@ type Book = {
 }
 
 type BookForm = Omit<Book, 'id'>
-const apiUrl = 'http://localhost:5070/api/books'
+const apiUrl = 'http://localhost:5211/api/books'
 const emptyForm: BookForm = { title: '', author: '', isbn: '', genre: '', publishedYear: new Date().getFullYear(), isAvailable: true }
 
 function App() {
