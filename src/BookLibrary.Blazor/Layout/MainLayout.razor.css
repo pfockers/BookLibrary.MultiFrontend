@@ -1,77 +1,16 @@
-.page {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
+.app-shell { width: min(1160px, calc(100% - 64px)); min-height: 100vh; margin: 0 auto; }
+.app-header { height: 76px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e0e5dd; }
+.brand { display: inline-flex; align-items: center; gap: 11px; color: #24443a; text-decoration: none; font-size: 13px; font-weight: 800; letter-spacing: .14em; }
+.brand-mark { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 10px 10px 10px 3px; background: #286a52; color: #fff; font-family: Georgia, serif; font-size: 20px; font-weight: 700; letter-spacing: 0; }
+.header-note { color: #77847c; font-family: Georgia, serif; font-size: 14px; font-style: italic; }
+.page-content { min-height: calc(100vh - 150px); }
+.content { padding: 0; }
+.app-footer { display: flex; justify-content: space-between; padding: 22px 0 28px; color: #9aa59d; font-size: 10px; }
+.app-footer span:last-child { font-size: 9px; font-weight: 700; letter-spacing: .1em; }
 
-main {
-    flex: 1;
-}
-
-.sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
-}
-
-.top-row {
-    background-color: #f7f7f7;
-    border-bottom: 1px solid #d6d5d5;
-    justify-content: flex-end;
-    height: 3.5rem;
-    display: flex;
-    align-items: center;
-}
-
-    .top-row ::deep a, .top-row ::deep .btn-link {
-        white-space: nowrap;
-        margin-left: 1.5rem;
-        text-decoration: none;
-    }
-
-    .top-row ::deep a:hover, .top-row ::deep .btn-link:hover {
-        text-decoration: underline;
-    }
-
-    .top-row ::deep a:first-child {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-@media (max-width: 640.98px) {
-    .top-row {
-        justify-content: space-between;
-    }
-
-    .top-row ::deep a, .top-row ::deep .btn-link {
-        margin-left: 0;
-    }
-}
-
-@media (min-width: 641px) {
-    .page {
-        flex-direction: row;
-    }
-
-    .sidebar {
-        width: 250px;
-        height: 100vh;
-        position: sticky;
-        top: 0;
-    }
-
-    .top-row {
-        position: sticky;
-        top: 0;
-        z-index: 1;
-    }
-
-    .top-row.auth ::deep a:first-child {
-        flex: 1;
-        text-align: right;
-        width: 0;
-    }
-
-    .top-row, article {
-        padding-left: 2rem !important;
-        padding-right: 1.5rem !important;
-    }
+@media (max-width: 600px) {
+    .app-shell { width: min(100% - 32px, 1160px); }
+    .app-header { height: 64px; }
+    .header-note { font-size: 12px; }
+    .app-footer { gap: 12px; flex-direction: column; }
 }

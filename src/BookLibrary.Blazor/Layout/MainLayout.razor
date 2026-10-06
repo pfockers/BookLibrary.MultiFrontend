@@ -1,16 +1,11 @@
 ﻿@inherits LayoutComponentBase
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
+<div class="app-shell">
+    <header class="app-header">
+        <a class="brand" href="/" aria-label="Bookshelf home"><span class="brand-mark">B</span><span>BOOKSHELF</span></a>
+        <span class="header-note">A little room for every story</span>
+    </header>
+    <main class="page-content">
+        <article class="content">@Body</article>
     </main>
+    <div class="app-footer"><span>Made for the love of reading.</span><span>BOOKSHELF · YOUR PERSONAL LIBRARY</span></div>
 </div>

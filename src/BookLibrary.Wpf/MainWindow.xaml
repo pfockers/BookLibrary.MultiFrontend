@@ -1,20 +1,105 @@
 ﻿<Window x:Class="BookLibrary.Wpf.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Book Library - WPF" Height="600" Width="1000">
-    <Grid Margin="16">
-        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-        <UniformGrid Columns="4" Margin="0,0,0,12">
-            <StackPanel Margin="4"><TextBlock Text="Title"/><TextBox Text="{Binding NewBook.Title, UpdateSourceTrigger=PropertyChanged}"/></StackPanel>
-            <StackPanel Margin="4"><TextBlock Text="Author"/><TextBox Text="{Binding NewBook.Author, UpdateSourceTrigger=PropertyChanged}"/></StackPanel>
-            <StackPanel Margin="4"><TextBlock Text="ISBN"/><TextBox Text="{Binding NewBook.Isbn, UpdateSourceTrigger=PropertyChanged}"/></StackPanel>
-            <StackPanel Margin="4"><TextBlock Text="Genre"/><TextBox Text="{Binding NewBook.Genre, UpdateSourceTrigger=PropertyChanged}"/></StackPanel>
-        </UniformGrid>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Books}" AutoGenerateColumns="True" IsReadOnly="True"/>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,12,0,0">
-            <Button Content="Add book" Command="{Binding AddCommand}" Padding="18,6"/>
-            <Button Content="Delete selected" Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedItem, ElementName=booksGrid}" Margin="8,0,0,0" Padding="18,6"/>
-            <TextBlock Text="{Binding Status}" Margin="16,6,0,0"/>
-        </StackPanel>
+        Title="Bookshelf - Your Personal Library" Height="820" Width="1240" MinHeight="700" MinWidth="980"
+        Background="{StaticResource CanvasBrush}" FontFamily="{StaticResource AppFont}">
+    <Grid Margin="36,18,36,12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="58" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                <Border Width="32" Height="32" CornerRadius="10,10,10,3" Background="{StaticResource GreenBrush}">
+                    <TextBlock Text="B" Foreground="White" FontFamily="Georgia" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <TextBlock Text="BOOKSHELF" Margin="11,0,0,0" VerticalAlignment="Center" FontSize="13" FontWeight="Bold" Foreground="#24443A" />
+            </StackPanel>
+            <TextBlock Grid.Column="1" Text="A little room for every story" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Georgia" FontStyle="Italic" FontSize="14" Foreground="#77847C" />
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,24,0,24">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="PERSONAL COLLECTION" Margin="0,0,0,8" FontSize="10" FontWeight="Bold" Foreground="#638171" />
+                <TextBlock FontFamily="Georgia" FontSize="44" Foreground="#1D3932">
+                    <Run Text="Your library, " /><Run Text="well kept." Foreground="#52836D" FontStyle="Italic" />
+                </TextBlock>
+                <TextBlock Text="Keep your favorite reads close, and make space for the next one." Margin="0,10,0,0" FontSize="13" Foreground="#77847C" />
+            </StackPanel>
+            <Border Grid.Column="1" Padding="18,12" CornerRadius="14" BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" Background="#FFFFFF" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Books.Count}" FontFamily="Georgia" FontSize="29" Foreground="#2D694F" VerticalAlignment="Center" />
+                    <TextBlock Text="books in&#x0a;your collection" Margin="12,0,0,0" FontSize="11" Foreground="#6D7C73" VerticalAlignment="Center" />
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="2" Padding="20" Margin="0,0,0,30" CornerRadius="14" BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" Background="White">
+            <Grid>
+                <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+                <Grid Grid.Row="0" Margin="0,0,0,18">
+                    <StackPanel>
+                        <TextBlock Text="GROW YOUR SHELF" Margin="0,0,0,4" FontSize="10" FontWeight="Bold" Foreground="#638171" />
+                        <TextBlock Text="Add a book" FontFamily="Georgia" FontSize="22" Foreground="#263E37" />
+                    </StackPanel>
+                    <TextBlock Text="01" HorizontalAlignment="Right" FontFamily="Georgia" FontSize="17" Foreground="#AEBBB2" />
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.2*" /><ColumnDefinition Width="1.05*" /><ColumnDefinition Width="1.05*" />
+                        <ColumnDefinition Width=".85*" /><ColumnDefinition Width=".7*" /><ColumnDefinition Width=".9*" /><ColumnDefinition Width=".8*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0,0,10,0"><TextBlock Text="Title" Margin="0,0,0,6" FontSize="11" FontWeight="SemiBold" Foreground="#54675E" /><TextBox Text="{Binding NewBook.Title, UpdateSourceTrigger=PropertyChanged}" /></StackPanel>
+                    <StackPanel Grid.Column="1" Margin="0,0,10,0"><TextBlock Text="Author" Margin="0,0,0,6" FontSize="11" FontWeight="SemiBold" Foreground="#54675E" /><TextBox Text="{Binding NewBook.Author, UpdateSourceTrigger=PropertyChanged}" /></StackPanel>
+                    <StackPanel Grid.Column="2" Margin="0,0,10,0"><TextBlock Text="ISBN" Margin="0,0,0,6" FontSize="11" FontWeight="SemiBold" Foreground="#54675E" /><TextBox Text="{Binding NewBook.Isbn, UpdateSourceTrigger=PropertyChanged}" /></StackPanel>
+                    <StackPanel Grid.Column="3" Margin="0,0,10,0"><TextBlock Text="Genre" Margin="0,0,0,6" FontSize="11" FontWeight="SemiBold" Foreground="#54675E" /><TextBox Text="{Binding NewBook.Genre, UpdateSourceTrigger=PropertyChanged}" /></StackPanel>
+                    <StackPanel Grid.Column="4" Margin="0,0,10,0"><TextBlock Text="Published year" Margin="0,0,0,6" FontSize="11" FontWeight="SemiBold" Foreground="#54675E" /><TextBox Text="{Binding NewBook.PublishedYear, UpdateSourceTrigger=PropertyChanged}" /></StackPanel>
+                    <CheckBox Grid.Column="5" Content="Available to borrow" IsChecked="{Binding NewBook.IsAvailable}" VerticalAlignment="Center" Margin="3,22,6,0" FontSize="11" Foreground="#53685E" />
+                    <Button Grid.Column="6" Content="+  Add book" Command="{Binding AddCommand}" Style="{StaticResource PrimaryButton}" VerticalAlignment="Bottom" />
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="3" Margin="0,0,0,14">
+            <StackPanel>
+                <TextBlock Text="THE GOOD READS" Margin="0,0,0,4" FontSize="10" FontWeight="Bold" Foreground="#638171" />
+                <TextBlock Text="Your collection" FontFamily="Georgia" FontSize="22" Foreground="#263E37" />
+            </StackPanel>
+            <Border HorizontalAlignment="Right" VerticalAlignment="Center" Padding="9,6" CornerRadius="12" Background="#EAF1EB">
+                <TextBlock Text="BOOKS" FontSize="9" FontWeight="Bold" Foreground="#557462" />
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="4" CornerRadius="14" BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" Background="White" ClipToBounds="True">
+            <DataGrid x:Name="booksGrid" ItemsSource="{Binding Books}" SelectionMode="Single" SelectionUnit="FullRow" AlternationCount="2">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="1.5*" />
+                    <DataGridTextColumn Header="Author" Binding="{Binding Author}" Width="1.2*" />
+                    <DataGridTextColumn Header="ISBN" Binding="{Binding Isbn}" Width="1.1*" />
+                    <DataGridTextColumn Header="Genre" Binding="{Binding Genre}" Width=".9*" />
+                    <DataGridTextColumn Header="Year" Binding="{Binding PublishedYear}" Width=".55*" />
+                    <DataGridCheckBoxColumn Header="Available" Binding="{Binding IsAvailable}" IsReadOnly="True" Width=".8*" />
+                    <DataGridTemplateColumn Header="" Width="85">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Remove" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" Style="{StaticResource DeleteButton}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <Grid Grid.Row="5" Margin="0,14,0,0">
+            <TextBlock Text="Made for the love of reading." FontSize="10" Foreground="#9AA59D" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding Status}" HorizontalAlignment="Right" FontSize="10" Foreground="#9AA59D" VerticalAlignment="Center" />
+        </Grid>
     </Grid>
 </Window>
