@@ -4,4 +4,7 @@
     <Project Path="src/BookLibrary.Blazor/BookLibrary.Blazor.csproj" />
     <Project Path="src/BookLibrary.Wpf/BookLibrary.Wpf.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/BookLibrary.Api.Tests/BookLibrary.Api.Tests.csproj" />
+  </Folder>
 </Solution>

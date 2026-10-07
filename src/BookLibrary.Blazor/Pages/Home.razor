@@ -14,7 +14,7 @@
 
 <section class="panel add-panel" aria-labelledby="add-heading">
     <div class="panel-heading">
-        <div><p class="eyebrow">GROW YOUR SHELF</p><h2 id="add-heading">Add a book</h2></div>
+        <div><p class="eyebrow">GROW YOUR SHELF</p><h2 id="add-heading">@(editingId is null ? "Add a book" : "Edit a book")</h2></div>
         <span class="step-mark" aria-hidden="true">01</span>
     </div>
     <EditForm Model="newBook" OnValidSubmit="AddBook" class="book-form">
@@ -24,7 +24,8 @@
         <label class="field"><span>Genre</span><InputText class="form-control" @bind-Value="newBook.Genre" placeholder="e.g. Fiction" /></label>
         <label class="field year-field"><span>Published year</span><InputNumber class="form-control" @bind-Value="newBook.PublishedYear" /></label>
         <label class="availability-field"><InputCheckbox @bind-Value="newBook.IsAvailable" /><span>Available to borrow</span></label>
-        <button class="primary-button" type="submit"><span aria-hidden="true">+</span> Add book</button>
+        <button class="primary-button" type="submit"><span aria-hidden="true">+</span> @(editingId is null ? "Add book" : "Save changes")</button>
+        @if (editingId is not null) { <button type="button" @onclick="CancelEdit">Cancel</button> }
     </EditForm>
 </section>
 
@@ -35,6 +36,7 @@
         <div><p class="eyebrow">THE GOOD READS</p><h2 id="collection-heading">Your collection</h2></div>
         <span class="result-count">@(books?.Count ?? 0) BOOKS</span>
     </div>
+    <input class="form-control" placeholder="Search title or author" @bind="search" @bind:event="oninput" />
     @if (books is null) { <div class="table-card empty-state">Loading your collection…</div> }
     else {
         <div class="table-card"><div class="table-scroll"><table class="book-table">
@@ -45,7 +47,7 @@
                     <tr>
                         <td class="book-title">@book.Title</td><td>@book.Author</td><td class="isbn-cell">@book.Isbn</td><td><span class="genre-tag">@book.Genre</span></td><td>@book.PublishedYear</td>
                         <td><span class="availability @(book.IsAvailable ? "is-available" : "is-unavailable")"><span></span>@(book.IsAvailable ? "Available" : "On loan")</span></td>
-                        <td><button class="delete-button" @onclick="() => DeleteBook(book.Id)">Remove</button></td>
+                        <td><button @onclick="() => EditBook(book)">Edit</button> <button disabled="@(!book.IsAvailable)" @onclick="() => BorrowBook(book.Id)">Borrow</button> <button class="delete-button" @onclick="() => DeleteBook(book.Id)">Remove</button></td>
                     </tr>
                 }
             </tbody>
@@ -57,9 +59,14 @@
     private List<Book>? books;
     private Book newBook = new();
     private string? error;
+    private string search = "";
+    private int? editingId;
 
     protected override async Task OnInitializedAsync() => await LoadBooks();
-    private async Task LoadBooks() => books = await Http.GetFromJsonAsync<List<Book>>("api/books") ?? [];
-    private async Task AddBook() { try { error = null; var response = await Http.PostAsJsonAsync("api/books", newBook); response.EnsureSuccessStatusCode(); newBook = new(); await LoadBooks(); } catch (Exception ex) { error = ex.Message; } }
+    private async Task LoadBooks() => books = await Http.GetFromJsonAsync<List<Book>>($"api/books?search={Uri.EscapeDataString(search)}") ?? [];
+    private async Task AddBook() { try { error = null; var url = editingId is null ? "api/books" : $"api/books/{editingId}"; var response = editingId is null ? await Http.PostAsJsonAsync(url, newBook) : await Http.PutAsJsonAsync(url, newBook); response.EnsureSuccessStatusCode(); newBook = new(); editingId = null; await LoadBooks(); } catch (Exception ex) { error = ex.Message; } }
+    private void EditBook(Book book) { editingId = book.Id; newBook = new Book { Id = book.Id, Title = book.Title, Author = book.Author, Isbn = book.Isbn, Genre = book.Genre, PublishedYear = book.PublishedYear, IsAvailable = book.IsAvailable }; }
+    private void CancelEdit() { editingId = null; newBook = new(); }
+    private async Task BorrowBook(int id) { try { var response = await Http.PostAsJsonAsync($"api/books/{id}/loans", new { borrowerName = "Blazor User" }); response.EnsureSuccessStatusCode(); await LoadBooks(); } catch (Exception ex) { error = ex.Message; } }
     private async Task DeleteBook(int id) { await Http.DeleteAsync($"api/books/{id}"); await LoadBooks(); }
 }

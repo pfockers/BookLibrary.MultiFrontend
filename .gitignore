@@ -63,6 +63,14 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
+# Local configuration and database files
+.env
+.env.*
+!.env.example
+*.db
+*.db-shm
+*.db-wal
+
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
 
